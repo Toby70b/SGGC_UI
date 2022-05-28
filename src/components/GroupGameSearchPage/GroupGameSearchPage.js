@@ -8,7 +8,7 @@ import {getCommonGamesBetweenUsers} from "../../service/sggc";
 import {
     INSUFFICIENT_STEAM_IDS_MESSAGE,
     BAD_REQUEST_ERROR,
-    INTERNAL_SERVER_ERROR,
+    INTERNAL_SERVER_ERROR_MESSAGE,
     GITHUB_URL,
     LINKED_IN_URL
 } from "../../util/Constants";
@@ -24,7 +24,7 @@ function GroupGameSearchPage() {
     const [errorMessage, setErrorMessage] = useState("");
 
     const onSuccess = (jsonResponse) => {
-        setResultsDataSource(jsonResponse);
+        setResultsDataSource(jsonResponse.body);
         setLoading(false);
     }
 
@@ -41,22 +41,10 @@ function GroupGameSearchPage() {
     }
 
     const setErrorMessageByResponseCode = (error) => {
-        let errorMessage;
-        switch (error.code) {
-            case "404":
-                if (error.errorMessage) {
-                    errorMessage = error.errorMessage
-                } else {
-                    errorMessage = INTERNAL_SERVER_ERROR
-                }
-                break;
-            case "400":
-                errorMessage = BAD_REQUEST_ERROR
-                break;
-            default:
-                errorMessage = INTERNAL_SERVER_ERROR;
+        if(error.body && error.body.errorMessage){
+            setErrorMessage(error.body.errorMessage)
         }
-        setErrorMessage(errorMessage)
+        setErrorMessage(INTERNAL_SERVER_ERROR_MESSAGE)
     }
 
     const handleSearch = (requestObj) => {
