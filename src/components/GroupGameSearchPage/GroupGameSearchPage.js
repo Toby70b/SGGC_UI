@@ -13,6 +13,7 @@ import {
     LINKED_IN_URL
 } from "../../util/Constants";
 import "./GroupGameSearchPage.css"
+
 const {Title} = Typography;
 
 
@@ -41,10 +42,11 @@ function GroupGameSearchPage() {
     }
 
     const setErrorMessageByResponseCode = (error) => {
-        if(error.body && error.body.errorMessage){
+        if (error.body && error.body.errorMessage) {
             setErrorMessage(error.body.errorMessage)
+        } else {
+            setErrorMessage(INTERNAL_SERVER_ERROR_MESSAGE)
         }
-        setErrorMessage(INTERNAL_SERVER_ERROR_MESSAGE)
     }
 
     const handleSearch = (requestObj) => {
@@ -67,9 +69,9 @@ function GroupGameSearchPage() {
                         <Row type="flex" justify="center">
                             <div className={"smallPadding"}>
                                 <Link id="githubLink" href={GITHUB_URL} title="Github Project"><GithubOutlined
-                                    className={"icon"} /></Link>
+                                    className={"icon"}/></Link>
                             </div>
-                            <div className={"smallPadding"} >
+                            <div className={"smallPadding"}>
                                 <Link id="linkedinLink" href={LINKED_IN_URL} title="Linked In Profile"><LinkedinOutlined
                                     className={"icon"}/></Link>
                             </div>
