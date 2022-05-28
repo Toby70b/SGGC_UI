@@ -14,3 +14,5 @@ export const STEAM_URL = "https://store.steampowered.com/app/";
 
 //ValidationErrors
 export const STEAM_ID_NOT_VALID = "Steam Id must be a 17 character number e.g. 76561198045206229"
+export const VANITY_URL_NOT_ALPHANUMERIC_ERROR_MESSAGE = "Vanity URL must not contain special characters";
+export const VANITY_URL_NOT_WITHIN_REQUIRED_LENGTH_ERROR_MESSAGE = "Vanity URL must be between 3 and 32 characters long";

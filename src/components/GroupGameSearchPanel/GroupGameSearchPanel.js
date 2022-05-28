@@ -1,12 +1,29 @@
 import React, {useState} from "react";
 import 'antd/dist/antd.css';
-import {Button, Card, Checkbox, Popconfirm, Row, Table, Col, Modal, Alert, Collapse, Form, Input} from 'antd';
+import {
+    Alert,
+    Button,
+    Card,
+    Checkbox,
+    Col,
+    Collapse,
+    Form,
+    Input,
+    Modal,
+    Popconfirm,
+    Row,
+    Table,
+    Typography
+} from 'antd';
 import {Fade} from '@material-ui/core';
-import {STEAM_ID_NOT_VALID} from "../../util/Constants";
-import {Typography} from 'antd';
-import {SearchOutlined, PlusOutlined} from '@ant-design/icons';
+import {
+    VANITY_URL_NOT_ALPHANUMERIC_ERROR_MESSAGE,
+    VANITY_URL_NOT_WITHIN_REQUIRED_LENGTH_ERROR_MESSAGE
+} from "../../util/Constants";
+import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import './GroupGameSearchPanel.css'
 import '../common.css'
+import {ValidationResult} from "../../model/ValidationResult";
 
 const {Panel} = Collapse;
 const {Paragraph} = Typography;
@@ -38,14 +55,15 @@ function GroupGameSearchPanel(props) {
     const validationRules = [
         {
             required: true,
-            message: 'Please enter a Steam Id',
+            message: 'Please enter a Steam Id or Vanity URL',
         },
         ({getFieldValue}) => ({
             validator(_, value) {
-                if (validateSteamId(value)) {
-                    return Promise.resolve();
+                if (value) {
+                    let validationResult = validateSteamId(value);
+                    return validationResult.error ? Promise.reject(validationResult.errorMessage) : Promise.resolve();
                 }
-                return Promise.reject(STEAM_ID_NOT_VALID);
+                return Promise.reject();
             },
         }),
     ]
@@ -79,7 +97,7 @@ function GroupGameSearchPanel(props) {
     }
 
     const handleModalOpen = () => {
-        setModalVisible(true)
+        setModalVisible(true);
     }
 
     const handleCancel = () => {
@@ -87,11 +105,30 @@ function GroupGameSearchPanel(props) {
     }
 
     const validateSteamId = (value) => {
-        if (value) {
-            return !(value.length !== 17 || !/^\d+$/.test(value));
+        if (!isSteamId(value)) {
+            return validateVanityUrl(value);
         }
-        return false
+        return new ValidationResult(false);
     };
+
+    const isSteamId = (value) => {
+        let beginsWithSteamIdNumber = value.startsWith('7') || value.startsWith('8') || value.startsWith('9')
+        let isSeventeenCharactersLong = value.length === 17;
+        let isNumeric = /^\d+$/.test(value)
+        return beginsWithSteamIdNumber && isSeventeenCharactersLong && isNumeric;
+    }
+
+    const validateVanityUrl = (vanityUrl) => {
+        let containsNoSpecialCharacters = /^[A-Za-z0-9]*$/.test(vanityUrl)
+        let isCorrectLength = vanityUrl.length > 2 && vanityUrl.length < 33;
+        if (!containsNoSpecialCharacters) {
+            return new ValidationResult(true, vanityUrl, VANITY_URL_NOT_ALPHANUMERIC_ERROR_MESSAGE)
+        }
+        if (!isCorrectLength) {
+            return new ValidationResult(true, vanityUrl, VANITY_URL_NOT_WITHIN_REQUIRED_LENGTH_ERROR_MESSAGE)
+        }
+        return new ValidationResult(false);
+    }
 
     function handleCheck(e) {
         setMultiplayerOnly(e.target.checked)
@@ -122,11 +159,12 @@ function GroupGameSearchPanel(props) {
                 <Collapse>
                     <Panel header="What is this?" key="1">
                         <Paragraph>
-                            This is a tool that, when provided with two or more Steam Id's will return a list of common
+                            This is a tool that, when provided with two or more Steam Ids or vanity URLs will return a
+                            list of common
                             games.
                         </Paragraph>
                     </Panel>
-                    <Panel header="How do I find steam Id's?" key="2">
+                    <Panel header="How do I find Steam Ids / Vanity URLs?" key="2">
                         <Paragraph>
                             <ul>
                                 <li>
@@ -140,15 +178,12 @@ function GroupGameSearchPanel(props) {
                                     </Paragraph>
                                 </li>
                                 <li>
-                                    <Paragraph>Look for the number at the end, this is a Steam Id</Paragraph>
+                                    <Paragraph>Look for the number at the end, this is a Steam id</Paragraph>
                                     <Paragraph> https://steamcommunity.com/profiles/<b>76561198045206229</b>/</Paragraph>
                                 </li>
                                 <li>
-                                    <Paragraph>If instead of a number its a name, then that's a vanity url.</Paragraph>
-                                    <Paragraph>To resolve this into a Steam Id go to the below URL</Paragraph>
-                                    <Paragraph>
-                                        http://api.steampowered.com/ISteamUser/ResolveVanityURL/v0001/?key=B88AF6D15A99EF5A4E01075EF63E5DF2&vanityurl=<b>&lt;VanityURL&gt;</b>
-                                    </Paragraph>
+                                    <Paragraph>If instead of a number its a name, then that's a vanity URL. This can
+                                        also be used to search.</Paragraph>
                                 </li>
                             </ul>
                         </Paragraph>
@@ -157,10 +192,11 @@ function GroupGameSearchPanel(props) {
                         <Paragraph>
                             I belong to a group of 5-6 20 something friends whose primary hobby is gaming, as such we
                             all have steam accounts with each of us owning at least 200 games. We all prefer to play
-                            games together, we dont mind replaying games, including older games, if it means we can play
+                            games together, we don’t mind replaying games, including older games, if it means we can
+                            play
                             together. We would occasionally ask what games we have in common, however since steam only
                             allows users to compare their lists with one other user at a time this task was very
-                            tedious. I wanted more excuses to practice on REST API's so I researched Steam's API and
+                            tedious. I wanted more excuses to practice on REST APIs so I researched Steam's API and
                             once I discovered it was feasible to make a tool that could compare multiple users lists for
                             common games I decided to make this tool.
                         </Paragraph>
@@ -173,7 +209,7 @@ function GroupGameSearchPanel(props) {
                         </Paragraph>
                         <Paragraph>
                             So over time the Steam API loses information on games still owned by users. This can be
-                            because its been pulled off steam,
+                            because it’s been pulled off steam,
                             or the developer has accidentally created duplicate entries. Because of my requirements (We
                             wanted all possible multiplayer games showed)
                             I decided that in these cases the game should still appear in the list of multiplayer games.
