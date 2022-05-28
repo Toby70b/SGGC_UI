@@ -35,7 +35,7 @@ function GroupGameSearchPanel(props) {
 
     const columns = [
         {
-            title: 'Steam Id',
+            title: 'Steam Id / Vanity URL',
             dataIndex: 'id',
             key: 'id',
         },
@@ -242,8 +242,7 @@ function GroupGameSearchPanel(props) {
                                     name="steamId"
                                     rules={validationRules}
                                 >
-                                    <Input className={"marginBottom"} addonBefore={"Steam Id:"}
-                                           placeholder="76561198045206229"/>
+                                    <Input className={"marginBottom"} addonBefore={"Steam Id / Vanity URL:"}/>
                                 </Form.Item>
                                 <Form.Item>
                                     <Button classicon={<PlusOutlined/>} type="primary" htmlType="submit">
