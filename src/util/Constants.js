@@ -1,7 +1,7 @@
 //Response messages
 export const INSUFFICIENT_STEAM_IDS_MESSAGE = "Please enter at least 2 Steam Id's"
 export const BAD_REQUEST_ERROR = "Bad Request please check the ID's submitted and try again";
-export const INTERNAL_SERVER_ERROR = "Something went wrong with the checker please try again later...";
+export const INTERNAL_SERVER_ERROR_MESSAGE = "Something went wrong with the checker please try again later...";
 
 //Profile Urls
 export const GITHUB_URL = "https://github.com/Toby70b/SteamGroupGameChecker"
