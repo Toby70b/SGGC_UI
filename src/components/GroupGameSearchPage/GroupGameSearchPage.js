@@ -7,7 +7,6 @@ import {Link} from "@material-ui/core";
 import {getCommonGamesBetweenUsers} from "../../service/sggc";
 import {
     INSUFFICIENT_STEAM_IDS_MESSAGE,
-    BAD_REQUEST_ERROR,
     INTERNAL_SERVER_ERROR_MESSAGE,
     GITHUB_URL,
     LINKED_IN_URL
