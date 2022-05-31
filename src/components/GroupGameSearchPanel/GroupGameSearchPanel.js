@@ -1,19 +1,16 @@
 import React, {useState} from "react";
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.min.css';
 import {
     Alert,
     Button,
     Card,
     Checkbox,
     Col,
-    Collapse,
     Form,
     Input,
-    Modal,
     Popconfirm,
     Row,
-    Table,
-    Typography
+    Table
 } from 'antd';
 import {Fade} from '@material-ui/core';
 import {
@@ -24,17 +21,7 @@ import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import './GroupGameSearchPanel.css'
 import '../common.css'
 import {ValidationResult} from "../../model/ValidationResult";
-import * as PropTypes from "prop-types";
-
-const {Panel} = Collapse;
-const {Paragraph} = Typography;
-
-
-
-SearchPanelModal.propTypes = {
-    visible: PropTypes.bool,
-    onCancel: PropTypes.func
-};
+import SearchPanelModal from "../SearchPanelModal/SearchPanelModal";
 
 function GroupGameSearchPanel(props) {
     const [dataSource, setDataSource] = useState([]);

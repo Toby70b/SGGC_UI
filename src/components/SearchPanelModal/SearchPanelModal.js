@@ -1,10 +1,10 @@
 import React from 'react';
 import './SearchPanelModal.css';
 import {Collapse, Modal} from "antd";
-
-const SearchPanelModal = () => (
-    function SearchPanelModal(props) {
-        return <Modal
+import Paragraph from "antd/es/typography/Paragraph";
+const {Panel} = Collapse;
+function SearchPanelModal(props) {
+    return (<Modal
             title={<h2>FAQ</h2>}
             visible={props.visible}
             footer={[null]}
@@ -71,13 +71,8 @@ const SearchPanelModal = () => (
                     </Paragraph>
                 </Panel>
             </Collapse>
-
-        </Modal>;
-    }
-);
-
-SearchPanelModal.propTypes = {};
-
-SearchPanelModal.defaultProps = {};
+        </Modal>
+    );
+}
 
 export default SearchPanelModal;
