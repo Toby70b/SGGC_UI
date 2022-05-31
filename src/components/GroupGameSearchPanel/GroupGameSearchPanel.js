@@ -71,7 +71,7 @@ function GroupGameSearchPanel(props) {
     }
 
     const getSteamIdsForRequest = () => {
-        var steamIds = [];
+        let steamIds = [];
         dataSource.forEach(function (item) {
             steamIds.push(item.id);
         });
