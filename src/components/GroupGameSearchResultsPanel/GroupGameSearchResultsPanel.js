@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {Button, Card, Input, Space, Table} from "antd";
-import {HEADER_IMAGE_FILE_NAME, STEAM_MEDIA_REPO, STEAM_URL} from "../../util/Constants";
 import Highlighter from 'react-highlight-words';
 import {SearchOutlined} from '@ant-design/icons';
 import './GroupGameSearchResultsPanel.css'
@@ -8,7 +7,13 @@ import './GroupGameSearchResultsPanel.css'
 function GroupGameSearchResultsPanel(props) {
     const [searchText, setSearchText] = useState("");
     const [searchedColumn, setSearchedColumn] = useState("");
+
+    const STEAM_MEDIA_REPO = "https://steamcdn-a.akamaihd.net/steam/apps/"
+    const HEADER_IMAGE_FILE_NAME = "header_292x136.jpg"
+    const STEAM_URL = "https://store.steampowered.com/app/";
+
     let searchInput;
+
     const getColumnSearchProps = dataIndex => ({
         filterDropdown: ({setSelectedKeys, selectedKeys, confirm, clearFilters}) => (
             <div style={{padding: 8}}>
@@ -103,13 +108,13 @@ function GroupGameSearchResultsPanel(props) {
             <Card title={<h2>Search Results</h2>} loading={props.isLoading}
                   className={"boxShadow"}>
                 {!props.isLoading &&
-                <Table
-                    dataSource={props.dataSource}
-                    columns={columns}
-                    rowKey={record => record.appid}
-                    scroll={{y: 400}}
-                    pagination={true}
-                />
+                    <Table
+                        dataSource={props.dataSource}
+                        columns={columns}
+                        rowKey={record => record.appid}
+                        scroll={{y: 400}}
+                        pagination={true}
+                    />
                 }
             </Card>
         </div>
