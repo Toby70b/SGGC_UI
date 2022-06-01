@@ -5,18 +5,20 @@ import GroupGameSearchResultsPanel from "../GroupGameSearchResultsPanel/GroupGam
 import {GithubOutlined, LinkedinOutlined} from '@ant-design/icons';
 import {Link} from "@material-ui/core";
 import {getCommonGamesBetweenUsers} from "../../service/sggc";
-import {
-    INSUFFICIENT_STEAM_IDS_MESSAGE,
-    INTERNAL_SERVER_ERROR_MESSAGE,
-    GITHUB_URL,
-    LINKED_IN_URL
-} from "../../util/Constants";
 import "./GroupGameSearchPage.css"
 
 const {Title} = Typography;
-
-
 function GroupGameSearchPage() {
+
+    const responseMessages = {
+        insufficientSteamIds: "Please enter at least 2 Steam Id's",
+        internalServerError: "Something went wrong with the checker please try again later..."
+    };
+
+    const externalUrls = {
+        githubUrl: "https://github.com/Toby70b",
+        linkedInUrl: "https://www.linkedin.com/in/tobias-peel/"
+    };
 
     const [resultsDataSource, setResultsDataSource] = useState([])
     const [displayResults, setDisplayResults] = useState(false);
@@ -44,7 +46,7 @@ function GroupGameSearchPage() {
         if (error.body && error.body.errorMessage) {
             setErrorMessage(error.body.errorMessage)
         } else {
-            setErrorMessage(INTERNAL_SERVER_ERROR_MESSAGE)
+            setErrorMessage(responseMessages.internalServerError)
         }
     }
 
@@ -53,7 +55,7 @@ function GroupGameSearchPage() {
             resetSearchPage();
             getCommonGamesBetweenUsers(requestObj, onSuccess, onFetchError)
         } else {
-            setErrorMessage(INSUFFICIENT_STEAM_IDS_MESSAGE)
+            setErrorMessage(responseMessages.insufficientSteamIds)
         }
     }
 
@@ -67,11 +69,11 @@ function GroupGameSearchPage() {
                         </Row>
                         <Row type="flex" justify="center">
                             <div className={"smallPadding"}>
-                                <Link id="githubLink" href={GITHUB_URL} title="Github Project"><GithubOutlined
+                                <Link id="githubLink" href={externalUrls.githubUrl} title="Github Project"><GithubOutlined
                                     className={"icon"}/></Link>
                             </div>
                             <div className={"smallPadding"}>
-                                <Link id="linkedinLink" href={LINKED_IN_URL} title="Linked In Profile"><LinkedinOutlined
+                                <Link id="linkedinLink" href={externalUrls.linkedInUrl} title="Linked In Profile"><LinkedinOutlined
                                     className={"icon"}/></Link>
                             </div>
                         </Row>

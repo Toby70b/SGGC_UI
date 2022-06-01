@@ -13,10 +13,6 @@ import {
     Table
 } from 'antd';
 import {Fade} from '@material-ui/core';
-import {
-    VANITY_URL_NOT_ALPHANUMERIC_ERROR_MESSAGE,
-    VANITY_URL_NOT_WITHIN_REQUIRED_LENGTH_ERROR_MESSAGE
-} from "../../util/Constants";
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import './GroupGameSearchPanel.css'
 import '../common.css'
@@ -27,6 +23,9 @@ function GroupGameSearchPanel(props) {
     const [dataSource, setDataSource] = useState([]);
     const [multiplayerOnly, setMultiplayerOnly] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
+
+    const VANITY_URL_NOT_ALPHANUMERIC_ERROR_MESSAGE = "Vanity URL must not contain special characters";
+    const VANITY_URL_NOT_WITHIN_REQUIRED_LENGTH_ERROR_MESSAGE = "Vanity URL must be between 3 and 32 characters long";
 
     const columns = [
         {
