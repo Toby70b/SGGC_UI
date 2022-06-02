@@ -12,12 +12,12 @@ import GroupGameSearchRequest from "../../model/GroupGameSearchRequest"
 import SearchPanelModal from "../SearchPanelModal/SearchPanelModal";
 
 type SearchPanelProps = {
-    onSearch : (request : GroupGameSearchRequest) => void
-    errorMessage : string
+    onSearch: (request: GroupGameSearchRequest) => void
+    errorMessage: string
 }
 
-export const GroupGameSearchPanel = ({onSearch,errorMessage}:SearchPanelProps) => {
-    const [dataSource, setDataSource] = useState <{key : string, id :string}[]>([]);
+export const GroupGameSearchPanel = ({onSearch, errorMessage}: SearchPanelProps) => {
+    const [dataSource, setDataSource] = useState<{ key: string, id: string }[]>([]);
     const [multiplayerOnly, setMultiplayerOnly] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -34,7 +34,7 @@ export const GroupGameSearchPanel = ({onSearch,errorMessage}:SearchPanelProps) =
         {
             title: 'Action',
             key: 'action',
-            render: (text : String, record: { id: string; }) =>
+            render: (text: String, record: { id: string; }) =>
                 dataSource.length >= 1 ? (
                     <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record.id)}>
                         <a>Delete</a>
@@ -49,7 +49,7 @@ export const GroupGameSearchPanel = ({onSearch,errorMessage}:SearchPanelProps) =
             message: 'Please enter a Steam Id or Vanity URL',
         },
         () => ({
-            validator(rule : any, value? :string) {
+            validator(rule: any, value?: string) {
                 if (value) {
                     let validationResult = validateSteamId(value);
                     return validationResult.isError ? Promise.reject(validationResult.getErrorMessage) : Promise.resolve();
@@ -65,7 +65,7 @@ export const GroupGameSearchPanel = ({onSearch,errorMessage}:SearchPanelProps) =
 
     const getSteamIdsForRequest = () => {
         let steamIds: string[] = [];
-        dataSource.forEach((cell: {id: string}) => {
+        dataSource.forEach((cell: { id: string }) => {
             steamIds.push(cell.id);
         });
         return steamIds
@@ -75,11 +75,11 @@ export const GroupGameSearchPanel = ({onSearch,errorMessage}:SearchPanelProps) =
         onSearch(collectFormData())
     }
 
-    const handleDelete = (id : string) => {
-        setDataSource(dataSource.filter((item : {id : string}) => item.id !== id));
+    const handleDelete = (id: string) => {
+        setDataSource(dataSource.filter((item: { id: string }) => item.id !== id));
     };
 
-    const handleAdd = (value : {steamId : string}) => {
+    const handleAdd = (value: { steamId: string }) => {
         const newList = dataSource.concat({key: value.steamId, id: value.steamId});
         setDataSource(newList);
     }
@@ -99,7 +99,7 @@ export const GroupGameSearchPanel = ({onSearch,errorMessage}:SearchPanelProps) =
         return new ValidationResult(false);
     };
 
-    const isSteamId = (value : string) => {
+    const isSteamId = (value: string) => {
         let beginsWithSteamIdNumber = value.startsWith('7') || value.startsWith('8') || value.startsWith('9')
         let isSeventeenCharactersLong = value.length === 17;
         let isNumeric = /^\d+$/.test(value)
@@ -118,7 +118,7 @@ export const GroupGameSearchPanel = ({onSearch,errorMessage}:SearchPanelProps) =
         return new ValidationResult(false);
     }
 
-    function handleCheck(e : {target: {checked : boolean}}) {
+    function handleCheck(e: { target: { checked: boolean } }) {
         setMultiplayerOnly(e.target.checked)
     }
 
