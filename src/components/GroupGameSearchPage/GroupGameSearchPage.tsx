@@ -1,11 +1,18 @@
 import React, {useState} from "react";
 import {Typography, Row, Col} from "antd";
 import GroupGameSearchPanel from "../GroupGameSearchPanel/GroupGameSearchPanel";
+//TODO remove below
+// @ts-ignore
 import GroupGameSearchResultsPanel from "../GroupGameSearchResultsPanel/GroupGameSearchResultsPanel";
 import {GithubOutlined, LinkedinOutlined} from '@ant-design/icons';
 import {Link} from "@material-ui/core";
+//TODO remove below
+// @ts-ignore
 import {getCommonGamesBetweenUsers} from "../../service/sggc";
 import "./GroupGameSearchPage.css"
+import GroupGameSearchResponse from "../../model/GroupGameSearchResponse";
+import ApiError from "../../model/ApiError";
+import GroupGameSearchRequest from "../../model/GroupGameSearchRequest";
 
 const {Title} = Typography;
 function GroupGameSearchPage() {
@@ -20,17 +27,17 @@ function GroupGameSearchPage() {
         linkedInUrl: "https://www.linkedin.com/in/tobias-peel/"
     };
 
-    const [resultsDataSource, setResultsDataSource] = useState([])
+    const [resultsDataSource, setResultsDataSource] = useState<GroupGameSearchResponse>()
     const [displayResults, setDisplayResults] = useState(false);
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("");
 
-    const onSuccess = (jsonResponse) => {
+    const onSuccess = (jsonResponse: {body : GroupGameSearchResponse}) => {
         setResultsDataSource(jsonResponse.body);
         setLoading(false);
     }
 
-    const onFetchError = (error) => {
+    const onFetchError = (error : GroupGameSearchResponse) => {
         setErrorMessageByResponseCode(error)
         setDisplayResults(false);
         setLoading(false)
@@ -42,18 +49,19 @@ function GroupGameSearchPage() {
         setLoading(true);
     }
 
-    const setErrorMessageByResponseCode = (error) => {
-        if (error.body && error.body.errorMessage) {
-            setErrorMessage(error.body.errorMessage)
+    const setErrorMessageByResponseCode = (response : GroupGameSearchResponse) => {
+        let error : ApiError = response.getBody;
+        if (error && error.getErrorMessage) {
+            setErrorMessage(error.getErrorMessage)
         } else {
             setErrorMessage(responseMessages.internalServerError)
         }
     }
 
-    const handleSearch = (requestObj) => {
-        if (requestObj.steamIds.length >= 2) {
+    const handleSearch = (request : GroupGameSearchRequest) => {
+        if (request.getSteamIds.length >= 2) {
             resetSearchPage();
-            getCommonGamesBetweenUsers(requestObj, onSuccess, onFetchError)
+            getCommonGamesBetweenUsers(request, onSuccess, onFetchError)
         } else {
             setErrorMessage(responseMessages.insufficientSteamIds)
         }
@@ -61,13 +69,13 @@ function GroupGameSearchPage() {
 
     return (
         <div>
-            <Row type="flex" justify="center">
+            <Row justify="center">
                 <Col xs={24} md={18} lg={14} xxl={7}>
                     <div className={"title"}>
-                        <Row type="flex" justify="center">
-                            <Title align="center">Steam Group Game Checker</Title>
+                        <Row>
+                            <Title>Steam Group Game Checker</Title>
                         </Row>
-                        <Row type="flex" justify="center">
+                        <Row justify="center">
                             <div className={"smallPadding"}>
                                 <Link id="githubLink" href={externalUrls.githubUrl} title="Github Project"><GithubOutlined
                                     className={"icon"}/></Link>
@@ -80,7 +88,7 @@ function GroupGameSearchPage() {
                     </div>
                 </Col>
             </Row>
-            <Row type="flex" justify="center" className={"row"}>
+            <Row justify="center" className={"row"}>
                 <Col xs={23} md={20} lg={16} xxl={9}>
                     <GroupGameSearchPanel
                         onSearch={handleSearch}
@@ -88,7 +96,7 @@ function GroupGameSearchPage() {
                     />
                 </Col>
             </Row>
-            <Row type="flex" justify="center" className={"row"}>
+            <Row justify="center" className={"row"}>
                 <Col xs={23} md={20} lg={16} xxl={9}>
                     {displayResults &&
                     <GroupGameSearchResultsPanel
