@@ -12,8 +12,8 @@ import GroupGameSearchRequest from "../../model/GroupGameSearchRequest"
 import SearchPanelModal from "../SearchPanelModal/SearchPanelModal";
 
 type SearchPanelProps = {
-    onSearch: (request: GroupGameSearchRequest) => void
-    errorMessage: string
+    onSearch: (request: GroupGameSearchRequest) => void;
+    errorMessage: string;
 }
 
 export const GroupGameSearchPanel = ({onSearch, errorMessage}: SearchPanelProps) => {
