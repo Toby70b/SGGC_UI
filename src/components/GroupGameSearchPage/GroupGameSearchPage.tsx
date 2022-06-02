@@ -10,9 +10,10 @@ import {Link} from "@material-ui/core";
 // @ts-ignore
 import {getCommonGamesBetweenUsers} from "../../service/sggc";
 import "./GroupGameSearchPage.css"
-import GroupGameSearchResponse from "../../model/GroupGameSearchResponse";
-import ApiError from "../../model/ApiError";
+import {GroupGameSearchResponse} from "../../model/GroupGameSearchResponse";
+import {ApiError} from "../../model/ApiError";
 import GroupGameSearchRequest from "../../model/GroupGameSearchRequest";
+import {Application} from "../../model/Application";
 
 const {Title} = Typography;
 function GroupGameSearchPage() {
@@ -27,12 +28,12 @@ function GroupGameSearchPage() {
         linkedInUrl: "https://www.linkedin.com/in/tobias-peel/"
     };
 
-    const [resultsDataSource, setResultsDataSource] = useState<GroupGameSearchResponse>()
+    const [resultsDataSource, setResultsDataSource] = useState<Application[]>([])
     const [displayResults, setDisplayResults] = useState(false);
     const [loading, setLoading] = useState(false)
     const [errorMessage, setErrorMessage] = useState("");
 
-    const onSuccess = (jsonResponse: {body : GroupGameSearchResponse}) => {
+    const onSuccess = (jsonResponse: GroupGameSearchResponse) => {
         setResultsDataSource(jsonResponse.body);
         setLoading(false);
     }
@@ -50,9 +51,9 @@ function GroupGameSearchPage() {
     }
 
     const setErrorMessageByResponseCode = (response : GroupGameSearchResponse) => {
-        let error : ApiError = response.getBody;
-        if (error && error.getErrorMessage) {
-            setErrorMessage(error.getErrorMessage)
+        let error : ApiError = response.body;
+        if (error && error.errorMessage) {
+            setErrorMessage(error.errorMessage)
         } else {
             setErrorMessage(responseMessages.internalServerError)
         }
@@ -72,7 +73,7 @@ function GroupGameSearchPage() {
             <Row justify="center">
                 <Col xs={24} md={18} lg={14} xxl={7}>
                     <div className={"title"}>
-                        <Row>
+                        <Row justify="center">
                             <Title>Steam Group Game Checker</Title>
                         </Row>
                         <Row justify="center">
