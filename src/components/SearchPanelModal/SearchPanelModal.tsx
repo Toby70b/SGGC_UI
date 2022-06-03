@@ -2,8 +2,15 @@ import React from 'react';
 import './SearchPanelModal.css';
 import {Collapse, Modal} from "antd";
 import Paragraph from "antd/es/typography/Paragraph";
+import GroupGameSearchRequest from "../../model/GroupGameSearchRequest";
 const {Panel} = Collapse;
-function SearchPanelModal(props) {
+
+type SearchModalProps = {
+    onCancel: () => void
+    visible: boolean
+}
+
+function SearchPanelModal(props : SearchModalProps) {
     return (<Modal
             title={<h2>FAQ</h2>}
             visible={props.visible}

@@ -1,6 +1,6 @@
 import React from 'react';
 import {mount} from 'enzyme';
-import GroupGameSearchPanel from "../GroupGameSearchPanel/GroupGameSearchPanel";
+import GroupGameSearchPanel from "./GroupGameSearchPanel";
 
 test('Add steam Ids works as expected', () => {
     const component = mount(<GroupGameSearchPanel errorMessage={""} dataSource={{}}/>);

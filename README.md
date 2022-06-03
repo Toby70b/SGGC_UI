@@ -42,7 +42,8 @@ tobypeel/steam_group_game_checker_ui:prod
 
 ## Things to improve
 
-- [ ] General cleanup and refactoring
+- [ ] improve type coverage around deserialization (lack of support in the language, especially around generic types killed 
+my enthusiasm for this though)
 - [ ] Improve logging framework, especially with AWS
 
 ## Thanks to

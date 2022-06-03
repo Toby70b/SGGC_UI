@@ -1,26 +1,21 @@
 import React, {useState} from "react";
 import 'antd/dist/antd.min.css';
-import {
-    Alert,
-    Button,
-    Card,
-    Checkbox,
-    Col,
-    Form,
-    Input,
-    Popconfirm,
-    Row,
-    Table
-} from 'antd';
+import {Alert, Button, Card, Checkbox, Col, Form, Input, Popconfirm, Row, Table} from 'antd';
 import {Fade} from '@material-ui/core';
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import './GroupGameSearchPanel.css'
 import '../common.css'
-import {ValidationResult} from "../../model/ValidationResult";
+import ValidationResult from "../../model/ValidationResult";
+import GroupGameSearchRequest from "../../model/GroupGameSearchRequest"
 import SearchPanelModal from "../SearchPanelModal/SearchPanelModal";
 
-function GroupGameSearchPanel(props) {
-    const [dataSource, setDataSource] = useState([]);
+type SearchPanelProps = {
+    onSearch: (request: GroupGameSearchRequest) => void;
+    errorMessage: string;
+}
+
+export const GroupGameSearchPanel = ({onSearch, errorMessage}: SearchPanelProps) => {
+    const [dataSource, setDataSource] = useState<{ key: string, id: string }[]>([]);
     const [multiplayerOnly, setMultiplayerOnly] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
 
@@ -37,7 +32,7 @@ function GroupGameSearchPanel(props) {
         {
             title: 'Action',
             key: 'action',
-            render: (text, record) =>
+            render: (text: String, record: { id: string; }) =>
                 dataSource.length >= 1 ? (
                     <Popconfirm title="Are you sure?" onConfirm={() => handleDelete(record.id)}>
                         <a>Delete</a>
@@ -51,11 +46,11 @@ function GroupGameSearchPanel(props) {
             required: true,
             message: 'Please enter a Steam Id or Vanity URL',
         },
-        ({getFieldValue}) => ({
-            validator(_, value) {
+        () => ({
+            validator(rule: unknown, value?: string) {
                 if (value) {
                     let validationResult = validateSteamId(value);
-                    return validationResult.error ? Promise.reject(validationResult.errorMessage) : Promise.resolve();
+                    return validationResult.isError ? Promise.reject(validationResult.getErrorMessage) : Promise.resolve();
                 }
                 return Promise.reject();
             },
@@ -63,30 +58,27 @@ function GroupGameSearchPanel(props) {
     ]
 
     const collectFormData = () => {
-        let request = {};
-        request.steamIds = getSteamIdsForRequest()
-        request.multiplayerOnly = multiplayerOnly;
-        return request;
+        return new GroupGameSearchRequest(getSteamIdsForRequest(), multiplayerOnly);
     }
 
     const getSteamIdsForRequest = () => {
-        let steamIds = [];
-        dataSource.forEach(function (item) {
-            steamIds.push(item.id);
+        let steamIds: string[] = [];
+        dataSource.forEach((cell: { id: string }) => {
+            steamIds.push(cell.id);
         });
         return steamIds
     }
 
     const handleSearch = () => {
-        props.onSearch(collectFormData())
+        onSearch(collectFormData())
     }
 
-    const handleDelete = id => {
-        setDataSource(dataSource.filter(item => item.id !== id));
+    const handleDelete = (id: string) => {
+        setDataSource(dataSource.filter((item: { id: string }) => item.id !== id));
     };
 
-    const handleAdd = (value) => {
-        const newList = dataSource.concat({key: value.steamId + dataSource.length, id: value.steamId});
+    const handleAdd = (value: { steamId: string }) => {
+        const newList = dataSource.concat({key: value.steamId, id: value.steamId});
         setDataSource(newList);
     }
 
@@ -98,21 +90,21 @@ function GroupGameSearchPanel(props) {
         setModalVisible(false);
     }
 
-    const validateSteamId = (value) => {
+    const validateSteamId = (value: string) => {
         if (!isSteamId(value)) {
             return validateVanityUrl(value);
         }
         return new ValidationResult(false);
     };
 
-    const isSteamId = (value) => {
+    const isSteamId = (value: string) => {
         let beginsWithSteamIdNumber = value.startsWith('7') || value.startsWith('8') || value.startsWith('9')
         let isSeventeenCharactersLong = value.length === 17;
         let isNumeric = /^\d+$/.test(value)
         return beginsWithSteamIdNumber && isSeventeenCharactersLong && isNumeric;
     }
 
-    const validateVanityUrl = (vanityUrl) => {
+    const validateVanityUrl = (vanityUrl: string) => {
         let containsNoSpecialCharacters = /^[A-Za-z0-9]*$/.test(vanityUrl)
         let isCorrectLength = vanityUrl.length > 2 && vanityUrl.length < 33;
         if (!containsNoSpecialCharacters) {
@@ -124,7 +116,7 @@ function GroupGameSearchPanel(props) {
         return new ValidationResult(false);
     }
 
-    function handleCheck(e) {
+    function handleCheck(e: { target: { checked: boolean } }) {
         setMultiplayerOnly(e.target.checked)
     }
 
@@ -147,12 +139,12 @@ function GroupGameSearchPanel(props) {
             <SearchPanelModal visible={modalVisible} onCancel={handleCancel}/>
 
             <Card title={<Header/>} className={"boxShadow"}>
-                <Fade in={props.errorMessage !== ''} timeout={{"enter": 1000, "exit": 0}} unmountOnExit={true}>
+                <Fade in={errorMessage !== ''} timeout={{"enter": 1000, "exit": 0}} unmountOnExit={true}>
                     <Alert
                         showIcon
                         type={"error"}
                         message={"Error"}
-                        description={props.errorMessage}
+                        description={errorMessage}
                         className={"alert"}
                     />
                 </Fade>
@@ -172,7 +164,7 @@ function GroupGameSearchPanel(props) {
                                     <Input className={"marginBottom"} addonBefore={"Steam Id / Vanity URL:"}/>
                                 </Form.Item>
                                 <Form.Item>
-                                    <Button classicon={<PlusOutlined/>} type="primary" htmlType="submit">
+                                    <Button icon={<PlusOutlined/>} type="primary" htmlType="submit">
                                         Submit
                                     </Button>
                                 </Form.Item>
@@ -183,7 +175,7 @@ function GroupGameSearchPanel(props) {
 
                 <Table dataSource={dataSource} columns={columns} rowKey={record => record.key} scroll={{y: 300}}
                        pagination={false} style={{marginBottom: 18}}/>
-                <Row type="flex" justify="end">
+                <Row justify="end">
                     <Checkbox onChange={handleCheck}>
                         Multiplayer only?
                     </Checkbox>
