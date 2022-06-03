@@ -3,6 +3,7 @@ import {Card, Table} from "antd";
 import './GroupGameSearchResultsPanel.css'
 import {Application} from "../../model/Application";
 import TableColumnTextFilterConfig from "./TableColumnSearchFilter";
+import {ColumnsType} from "antd/es/table";
 
 type ResultsPanelProps = {
     dataSource: Application[]
@@ -18,7 +19,7 @@ function GroupGameSearchResultsPanel(props: ResultsPanelProps) {
     const STEAM_URL = "https://store.steampowered.com/app/";
 
 
-    const columns = [
+    const columns: ColumnsType<Application>  = [
         {
             title: '',
             key: 'appid',
@@ -30,7 +31,7 @@ function GroupGameSearchResultsPanel(props: ResultsPanelProps) {
             key: 'name',
             render: (record: Application) => (<a href={STEAM_URL + record.appid + "/"}>{record.name}</a>),
             ...TableColumnTextFilterConfig<Application>(),
-            onFilter: (value : any, record : Application) => {
+            onFilter: (value : string | number | boolean, record : Application) => {
                 return record.name.toString()
                     .toLowerCase()
                     .includes(value.toString().toLowerCase());

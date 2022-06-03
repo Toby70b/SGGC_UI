@@ -49,7 +49,7 @@ export const GroupGameSearchPanel = ({onSearch, errorMessage}: SearchPanelProps)
             message: 'Please enter a Steam Id or Vanity URL',
         },
         () => ({
-            validator(rule: any, value?: string) {
+            validator(rule: unknown, value?: string) {
                 if (value) {
                     let validationResult = validateSteamId(value);
                     return validationResult.isError ? Promise.reject(validationResult.getErrorMessage) : Promise.resolve();

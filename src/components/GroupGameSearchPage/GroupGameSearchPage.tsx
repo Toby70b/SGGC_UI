@@ -1,8 +1,6 @@
 import React, {useState} from "react";
 import {Typography, Row, Col} from "antd";
 import GroupGameSearchPanel from "../GroupGameSearchPanel/GroupGameSearchPanel";
-//TODO remove below
-// @ts-ignore
 import GroupGameSearchResultsPanel from "../GroupGameSearchResultsPanel/GroupGameSearchResultsPanel";
 import {GithubOutlined, LinkedinOutlined} from '@ant-design/icons';
 import {Link} from "@material-ui/core";
@@ -34,7 +32,7 @@ function GroupGameSearchPage() {
     const [errorMessage, setErrorMessage] = useState("");
 
     const onSuccess = (jsonResponse: GroupGameSearchResponse) => {
-        setResultsDataSource(jsonResponse.body);
+        setResultsDataSource(jsonResponse.body as Application[]);
         setLoading(false);
     }
 
@@ -51,7 +49,7 @@ function GroupGameSearchPage() {
     }
 
     const setErrorMessageByResponseCode = (response : GroupGameSearchResponse) => {
-        let error : ApiError = response.body;
+        let error : ApiError = response.body as ApiError;
         if (error && error.errorMessage) {
             setErrorMessage(error.errorMessage)
         } else {
