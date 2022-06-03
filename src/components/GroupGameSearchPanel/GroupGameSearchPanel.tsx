@@ -7,8 +7,6 @@ import './GroupGameSearchPanel.css'
 import '../common.css'
 import ValidationResult from "../../model/ValidationResult";
 import GroupGameSearchRequest from "../../model/GroupGameSearchRequest"
-//TODO un-ignore the below
-// @ts-ignore
 import SearchPanelModal from "../SearchPanelModal/SearchPanelModal";
 
 type SearchPanelProps = {

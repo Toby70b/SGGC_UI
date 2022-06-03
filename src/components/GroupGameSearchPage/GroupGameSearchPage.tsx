@@ -4,8 +4,6 @@ import GroupGameSearchPanel from "../GroupGameSearchPanel/GroupGameSearchPanel";
 import GroupGameSearchResultsPanel from "../GroupGameSearchResultsPanel/GroupGameSearchResultsPanel";
 import {GithubOutlined, LinkedinOutlined} from '@ant-design/icons';
 import {Link} from "@material-ui/core";
-//TODO remove below
-// @ts-ignore
 import {getCommonGamesBetweenUsers} from "../../service/sggc";
 import "./GroupGameSearchPage.css"
 import {GroupGameSearchResponse} from "../../model/GroupGameSearchResponse";
