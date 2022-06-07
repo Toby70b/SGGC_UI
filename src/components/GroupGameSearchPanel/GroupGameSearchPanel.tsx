@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import 'antd/dist/antd.min.css';
 import {Alert, Button, Card, Checkbox, Col, Form, Input, Popconfirm, Row, Table} from 'antd';
-import {Fade} from '@material-ui/core';
+import { Fade } from '@mui/material';
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import './GroupGameSearchPanel.css'
 import '../common.css'

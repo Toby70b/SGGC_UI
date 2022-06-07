@@ -10,8 +10,8 @@ import {ApiError} from "../../model/ApiError";
 import GroupGameSearchRequest from "../../model/GroupGameSearchRequest";
 import {Application} from "../../model/Application";
 const { Link } = Anchor;
-
 const {Title} = Typography;
+
 function GroupGameSearchPage() {
 
     const responseMessages = {
