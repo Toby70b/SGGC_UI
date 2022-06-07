@@ -11,8 +11,6 @@ type ResultsPanelProps = {
 }
 
 function GroupGameSearchResultsPanel(props: ResultsPanelProps) {
-    const [searchText, setSearchText] = useState("");
-    const [searchedColumn, setSearchedColumn] = useState("");
 
     const STEAM_MEDIA_REPO = "https://steamcdn-a.akamaihd.net/steam/apps/"
     const HEADER_IMAGE_FILE_NAME = "header_292x136.jpg"
