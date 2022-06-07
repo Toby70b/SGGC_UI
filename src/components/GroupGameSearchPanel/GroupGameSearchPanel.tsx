@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import 'antd/dist/antd.min.css';
 import {Alert, Button, Card, Checkbox, Col, Form, Input, Popconfirm, Row, Table} from 'antd';
-import { Fade } from '@mui/material';
+import {Fade} from '@mui/material';
 import {PlusOutlined, SearchOutlined} from '@ant-design/icons';
 import './GroupGameSearchPanel.css'
 import '../common.css'
@@ -140,13 +140,15 @@ export const GroupGameSearchPanel = ({onSearch, errorMessage}: SearchPanelProps)
 
             <Card title={<Header/>} className={"boxShadow"}>
                 <Fade in={errorMessage !== ''} timeout={{"enter": 1000, "exit": 0}} unmountOnExit={true}>
-                    <Alert
-                        showIcon
-                        type={"error"}
-                        message={"Error"}
-                        description={errorMessage}
-                        className={"alert"}
-                    />
+                    <div>
+                        <Alert
+                            showIcon
+                            type={"error"}
+                            message={"Error"}
+                            description={errorMessage}
+                            className={"alert"}
+                        />
+                    </div>
                 </Fade>
                 <div className={"marginBottom"}>
                     <div>
