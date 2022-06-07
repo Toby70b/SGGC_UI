@@ -1,15 +1,15 @@
 import React, {useState} from "react";
-import {Typography, Row, Col} from "antd";
+import {Typography, Row, Col,Anchor} from "antd";
 import GroupGameSearchPanel from "../GroupGameSearchPanel/GroupGameSearchPanel";
 import GroupGameSearchResultsPanel from "../GroupGameSearchResultsPanel/GroupGameSearchResultsPanel";
 import {GithubOutlined, LinkedinOutlined} from '@ant-design/icons';
-import {Link} from "@material-ui/core";
 import {getCommonGamesBetweenUsers} from "../../service/sggc";
 import "./GroupGameSearchPage.css"
 import {GroupGameSearchResponse} from "../../model/GroupGameSearchResponse";
 import {ApiError} from "../../model/ApiError";
 import GroupGameSearchRequest from "../../model/GroupGameSearchRequest";
 import {Application} from "../../model/Application";
+const { Link } = Anchor;
 
 const {Title} = Typography;
 function GroupGameSearchPage() {
@@ -74,11 +74,11 @@ function GroupGameSearchPage() {
                         </Row>
                         <Row justify="center">
                             <div className={"smallPadding"}>
-                                <Link id="githubLink" href={externalUrls.githubUrl} title="Github Project"><GithubOutlined
+                                <Link href={externalUrls.githubUrl} title="Github Project"><GithubOutlined
                                     className={"icon"}/></Link>
                             </div>
                             <div className={"smallPadding"}>
-                                <Link id="linkedinLink" href={externalUrls.linkedInUrl} title="Linked In Profile"><LinkedinOutlined
+                                <Link  href={externalUrls.linkedInUrl} title="Linked In Profile"><LinkedinOutlined
                                     className={"icon"}/></Link>
                             </div>
                         </Row>
