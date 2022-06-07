@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {Typography, Row, Col,Anchor} from "antd";
+import {Typography, Row, Col, Anchor, Button} from "antd";
 import GroupGameSearchPanel from "../GroupGameSearchPanel/GroupGameSearchPanel";
 import GroupGameSearchResultsPanel from "../GroupGameSearchResultsPanel/GroupGameSearchResultsPanel";
 import {GithubOutlined, LinkedinOutlined} from '@ant-design/icons';
@@ -9,7 +9,8 @@ import {GroupGameSearchResponse} from "../../model/GroupGameSearchResponse";
 import {ApiError} from "../../model/ApiError";
 import GroupGameSearchRequest from "../../model/GroupGameSearchRequest";
 import {Application} from "../../model/Application";
-const { Link } = Anchor;
+
+const {Link} = Anchor;
 const {Title} = Typography;
 
 function GroupGameSearchPage() {
@@ -34,7 +35,7 @@ function GroupGameSearchPage() {
         setLoading(false);
     }
 
-    const onFetchError = (error : GroupGameSearchResponse) => {
+    const onFetchError = (error: GroupGameSearchResponse) => {
         setErrorMessageByResponseCode(error)
         setDisplayResults(false);
         setLoading(false)
@@ -46,8 +47,8 @@ function GroupGameSearchPage() {
         setLoading(true);
     }
 
-    const setErrorMessageByResponseCode = (response : GroupGameSearchResponse) => {
-        let error : ApiError = response.body as ApiError;
+    const setErrorMessageByResponseCode = (response: GroupGameSearchResponse) => {
+        let error: ApiError = response.body as ApiError;
         if (error && error.errorMessage) {
             setErrorMessage(error.errorMessage)
         } else {
@@ -55,7 +56,7 @@ function GroupGameSearchPage() {
         }
     }
 
-    const handleSearch = (request : GroupGameSearchRequest) => {
+    const handleSearch = (request: GroupGameSearchRequest) => {
         if (request.getSteamIds.length >= 2) {
             resetSearchPage();
             getCommonGamesBetweenUsers(request, onSuccess, onFetchError)
@@ -73,14 +74,14 @@ function GroupGameSearchPage() {
                             <Title>Steam Group Game Checker</Title>
                         </Row>
                         <Row justify="center">
-                            <div className={"smallPadding"}>
-                                <Link href={externalUrls.githubUrl} title="Github Project"><GithubOutlined
-                                    className={"icon"}/></Link>
-                            </div>
-                            <div className={"smallPadding"}>
-                                <Link  href={externalUrls.linkedInUrl} title="Linked In Profile"><LinkedinOutlined
-                                    className={"icon"}/></Link>
-                            </div>
+                                <div className={"smallPadding"}>
+                                    <Button type={"link"} href={externalUrls.githubUrl} title="Github Project"><GithubOutlined
+                                        className={"icon"}/></Button>
+                                </div>
+                                <div className={"smallPadding"}>
+                                    <Button type={"link"} href={externalUrls.linkedInUrl} title="Linked In Profile"><LinkedinOutlined
+                                        className={"icon"}/></Button>
+                                </div>
                         </Row>
                     </div>
                 </Col>
@@ -96,10 +97,10 @@ function GroupGameSearchPage() {
             <Row justify="center" className={"row"}>
                 <Col xs={23} md={20} lg={16} xxl={9}>
                     {displayResults &&
-                    <GroupGameSearchResultsPanel
-                        isLoading={loading}
-                        dataSource={resultsDataSource}
-                    />
+                        <GroupGameSearchResultsPanel
+                            isLoading={loading}
+                            dataSource={resultsDataSource}
+                        />
                     }
                 </Col>
             </Row>
